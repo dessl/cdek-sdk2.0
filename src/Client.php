@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CdekSDK2;
 
 use CdekSDK2\Actions\Barcodes;
+use CdekSDK2\Actions\CalculatorTariff;
 use CdekSDK2\Actions\Intakes;
 use CdekSDK2\Actions\Invoices;
 use CdekSDK2\Actions\LocationCities;
@@ -83,6 +84,11 @@ class Client
      * @var LocationCities
      */
     private $cities;
+
+    /**
+     * @var CalculatorTariff
+     */
+    private $calculator_tariff;
 
     /**
      * Client constructor.
@@ -299,12 +305,24 @@ class Client
     }
 
     /**
+     * @return CalculatorTariff
+     */
+    public function calculator_tariff(): CalculatorTariff
+    {
+        if ($this->calculator_tariff === null) {
+            $this->calculator_tariff = new CalculatorTariff($this->http_client, $this->serializer);
+        }
+        return $this->calculator_tariff;
+    }
+
+    /**
      * @param ApiResponse $response
      * @param string $className
+     * @param bool $useEntityKey
      * @return Response
      * @throws \Exception
      */
-    public function formatResponse(ApiResponse $response, string $className): Response
+    public function formatResponse(ApiResponse $response, string $className, bool $useEntityKey = true): Response
     {
         if (class_exists($className)) {
             /* @var $result Response */
@@ -312,7 +330,8 @@ class Client
             $result->entity = null;
 
             $array_response = json_decode($response->getBody(), true);
-            $entity = $this->serializer->deserialize(json_encode($array_response['entity']), $className, 'json');
+            $array_response = $useEntityKey ? $array_response['entity'] : $array_response;
+            $entity = $this->serializer->deserialize(json_encode($array_response), $className, 'json');
             $result->entity = $entity;
 
             return $result;
