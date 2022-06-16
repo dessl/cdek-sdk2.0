@@ -318,11 +318,10 @@ class Client
     /**
      * @param ApiResponse $response
      * @param string $className
-     * @param bool $useEntityKey
      * @return Response
      * @throws \Exception
      */
-    public function formatResponse(ApiResponse $response, string $className, bool $useEntityKey = true): Response
+    public function formatResponse(ApiResponse $response, string $className): Response
     {
         if (class_exists($className)) {
             /* @var $result Response */
@@ -330,7 +329,7 @@ class Client
             $result->entity = null;
 
             $array_response = json_decode($response->getBody(), true);
-            $array_response = $useEntityKey ? $array_response['entity'] : $array_response;
+            $array_response = isset($array_response['entity']) ? $array_response['entity'] : $array_response;
             $entity = $this->serializer->deserialize(json_encode($array_response), $className, 'json');
             $result->entity = $entity;
 

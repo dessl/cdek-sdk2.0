@@ -36,6 +36,13 @@ class Intake extends Base
     public $cdek_number;
 
     /**
+     * Номер заявки СДЭК на вызов курьера
+     * @Type("int")
+     * @var int
+     */
+    public $intake_number;
+
+    /**
      * Дата ожидания курьера (дата в формате ISO 8601: YYYY-MM-DD)
      * @Type("string")
      * @var string

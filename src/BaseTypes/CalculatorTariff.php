@@ -57,6 +57,13 @@ class CalculatorTariff extends Base
     public $to_location;
 
     /**
+     * Дополнительные услуги
+     * @Type("array<CdekSDK2\BaseTypes\Services>")
+     * @var Services[]
+     */
+    public $services;
+
+    /**
      * Список информации по местам (упаковкам)
      * @Type("array<CdekSDK2\BaseTypes\TariffPackage>")
      * @var TariffPackage[]
@@ -73,6 +80,7 @@ class CalculatorTariff extends Base
         parent::__construct($param);
         $this->rules = [
             'type' => 'required|numeric',
+            'services' => 'array',
             'tariff_code' => 'required|numeric',
             'from_location' => [
                 'required',

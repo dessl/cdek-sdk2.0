@@ -50,8 +50,5 @@ class Address extends Base
     public function __construct(array $param = [])
     {
         parent::__construct($param);
-        $this->rules = [
-            'code' => 'required'
-        ];
     }
 }

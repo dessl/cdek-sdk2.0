@@ -103,7 +103,6 @@ class Contact extends Base
             'name' => 'required',
             'email' => 'email',
             'phones' => [
-                'required',
                 function ($value) {
                     if (!is_array($value) || empty($value) || count($value) < 1) {
                         return false;
